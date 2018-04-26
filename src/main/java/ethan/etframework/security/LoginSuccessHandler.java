@@ -56,15 +56,23 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		if(this.forwardToDestination){  
-            logger.info("Login success,Forwarding to "+this.defaultTargetUrl);  
-              
-            request.getRequestDispatcher(this.defaultTargetUrl).forward(request, response);  
-        }else{  
-            logger.info("Login success,Redirecting to "+this.defaultTargetUrl);  
-              
-            this.redirectStrategy.sendRedirect(request, response, this.defaultTargetUrl);  
-        } 
+		
+		if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){ //如果是ajax请求响应头会有x-requested-with  
+			 response.setContentType("application/json; charset=utf-8");
+			response.getWriter().print("{\"responseCode\":\"Success\", \"redirectUrl\":\"/home\"}");
+            response.getWriter().flush();
+        }else{
+        	if(this.forwardToDestination){  
+                logger.info("Login success,Forwarding to "+this.defaultTargetUrl);  
+                  
+                request.getRequestDispatcher(this.defaultTargetUrl).forward(request, response);  
+            }else{  
+                logger.info("Login success,Redirecting to "+this.defaultTargetUrl);  
+                  
+                this.redirectStrategy.sendRedirect(request, response, this.defaultTargetUrl);  
+            } 
+        }
+		
 		
 		//移除验证码
         request.getSession().removeAttribute("session_verifyObj");

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ethan.etframework.entity.SecuritySysUser;
@@ -21,6 +22,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     
 	@Autowired
     private CustomUserDetailsService userService;
+	@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -29,9 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String imageCode = details.getImageCode();
         String session_imageCode = details.getSession_imageCode();
         long session_imageTime = details.getSession_imageTime();
-        if(imageCode == null || "".equals(imageCode)){
-        	return null;
-        }
+        
         if(imageCode == null || session_imageCode == null) {
             throw new ImageCodeIllegalException("验证码错误");
         }
@@ -52,7 +53,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Username not found.");
         }
         //加密过程在这里体现
-        if (!password.equals(user.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Wrong password.");
         }
 
@@ -63,7 +64,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+        return true;
     }
 }
 

@@ -92,5 +92,5 @@ mybatis-plus:
 
 #logging
 logging:
-  level: warn
-  file: etframework.log
+  level: debug
+  #file: etframework.log
