@@ -19,7 +19,7 @@ public class HomeController {
     
 	@GetMapping("greeting")
 	public String index(Map<String,Object> map){
-		return "/index";
+		return "/greeting";
 	}
 	
 	
@@ -30,14 +30,6 @@ public class HomeController {
 		logger.info(userDetails.toString());
 		map.put("username", userDetails.getUsername());
 		return "/home";
-	}
-	
-	@GetMapping("home2")
-	public String home2(Map<String,Object> map){
-		UserDetails userDetails =  LoginUserDetail.getLoginUserDetail();
-		logger.info(userDetails.toString());
-		map.put("username", userDetails.getUsername());
-		return "/index";
 	}
 	
 	@GetMapping({"login"})
