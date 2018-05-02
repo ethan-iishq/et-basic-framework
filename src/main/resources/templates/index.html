@@ -35,7 +35,7 @@
                             <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span  class="block m-t-xs"><strong  class="font-bold"><span sec:authentication="name"></span><span sec:authentication="principal.authorities"></span></strong></span>
+                               <span  class="block m-t-xs"><strong  class="font-bold"><span th:text="${username}">Bob</span></strong></span>
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                                 </span>
                             </a>

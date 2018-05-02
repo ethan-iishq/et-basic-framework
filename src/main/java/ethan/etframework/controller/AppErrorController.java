@@ -64,7 +64,9 @@ public class AppErrorController implements ErrorController{
         ModelAndView mav = null;
 
         Integer status = (Integer) map.get("status");
-        logger.info("AppErrorController GOT status :" + status);
+        String url = (String) map.get("dispatchURL");
+        String path = (String) map.get("path");
+        logger.info("AppErrorController GOT status :" + status + ", dispatchURL :" + url + ", path :" + path);
         if (status == 404){
             mav = new ModelAndView("err_pages/404", map);
         } else if (status == 403){
@@ -138,7 +140,7 @@ public class AppErrorController implements ErrorController{
 		RequestAttributes requestAttributes = new ServletRequestAttributes(request);
 		Map<String, Object> map = this.errorAttributes.getErrorAttributes(requestAttributes, includeStackTrace);
 		String URL = request.getRequestURL().toString();
-		map.put("URL", URL);
+		map.put("dispatchURL", URL);
 		logger.debug("AppErrorController.method [error info]: status-" + map.get("status") + ", request url-" + URL);
 		return map;
 	}

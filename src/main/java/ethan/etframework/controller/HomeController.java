@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import ethan.etframework.entity.SysUser;
+import ethan.etframework.util.LoginUserDetail;
 
 @Controller
 public class HomeController {
@@ -25,15 +26,17 @@ public class HomeController {
 	@GetMapping({"/", "home", "home.html"})
 	public String home(Map<String,Object> map){
 		map.put("hello","from TemplateController.helloHtml");
+		UserDetails userDetails =  LoginUserDetail.getLoginUserDetail();
+		logger.info(userDetails.toString());
+		map.put("username", userDetails.getUsername());
 		return "/home";
 	}
 	
 	@GetMapping("home2")
 	public String home2(Map<String,Object> map){
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()  
-			    .getAuthentication()  
-			    .getPrincipal();
+		UserDetails userDetails =  LoginUserDetail.getLoginUserDetail();
 		logger.info(userDetails.toString());
+		map.put("username", userDetails.getUsername());
 		return "/index";
 	}
 	

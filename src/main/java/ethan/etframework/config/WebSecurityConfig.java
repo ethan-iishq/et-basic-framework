@@ -72,19 +72,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 	
 	
-	@Override 
+/*	@Override 
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserService());
 		auth.authenticationProvider(customAuthenticationProvider);
 		
 		auth.eraseCredentials(false); 
-	}
-/*	@Autowired
+	}*/
+	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		
-		auth.authenticationProvider(myAuthenticationProvider);
-        auth.eraseCredentials(false);         
-    }*/  
+		auth.userDetailsService(customUserService());
+		auth.authenticationProvider(customAuthenticationProvider);
+		
+		auth.eraseCredentials(false);          
+    }  
 	
 	@Override 
 	protected void configure(HttpSecurity http) throws Exception {
