@@ -2,6 +2,10 @@ package ethan.etframework.controller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +14,8 @@ import ethan.etframework.entity.SysUser;
 
 @Controller
 public class HomeController {
-	
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    
 	@GetMapping("greeting")
 	public String index(Map<String,Object> map){
 		return "/index";
@@ -25,6 +30,10 @@ public class HomeController {
 	
 	@GetMapping("home2")
 	public String home2(Map<String,Object> map){
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()  
+			    .getAuthentication()  
+			    .getPrincipal();
+		logger.info(userDetails.toString());
 		return "/index";
 	}
 	

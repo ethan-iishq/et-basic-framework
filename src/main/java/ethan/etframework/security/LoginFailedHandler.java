@@ -22,14 +22,16 @@ public class LoginFailedHandler implements AuthenticationFailureHandler{
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	
-	private String defaultFailureUrl = "/login?error";
+	private final String defaultFailureUrl = "/login?error";
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
-
-		if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){ //如果是ajax请求响应头会有x-requested-with  
-			 response.setContentType("application/json; charset=utf-8");
-			response.getWriter().print("{\"responseCode\":\"Failure\", \"msg\":\"something wrong!\"}");
+		
+		//如果是ajax请求响应头会有x-requested-with  
+		if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){ 
+			String msg = exception.getMessage();
+			response.setContentType("application/json; charset=utf-8");
+			response.getWriter().print("{\"responseCode\":\"Failure\", \"msg\":\""+  msg + "\"}");
             response.getWriter().flush();
         }else{
         	response.sendRedirect(defaultFailureUrl);

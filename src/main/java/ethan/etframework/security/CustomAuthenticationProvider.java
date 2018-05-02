@@ -11,17 +11,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import ethan.etframework.entity.SecuritySysUser;
+import ethan.etframework.util.StringUtil;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     
 	@Autowired
-    private CustomUserDetailsService userService;
+    private UserDetailsService userService;
 	@Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -47,6 +49,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
+        
+        if(StringUtil.isStrEmpty(username) || StringUtil.isStrEmpty(password)){
+        	throw new BadCredentialsException("Empty username or password.");
+        }
+        
         SecuritySysUser user = (SecuritySysUser) userService.loadUserByUsername(username);
         logger.info(username + ":" + password);
         if(user == null){

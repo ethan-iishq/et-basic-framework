@@ -3,6 +3,8 @@ package ethan.etframework.service.impl;
 import ethan.etframework.entity.SysUser;
 import ethan.etframework.mapper.SysUserMapper;
 import ethan.etframework.service.SysUserService;
+import ethan.etframework.util.StringUtil;
+
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		SysUser sysUser = new SysUser();
 		sysUser.setUsername(username);
 		return sysUserMapper.selectOne(sysUser);
+	}
+
+	@Override
+	public Integer updateUser(SysUser entity) {
+		String passwd = entity.getPassword().trim();
+		if(!StringUtil.isStrEmpty(passwd)){
+			passwd = bCryptPasswordEncoder.encode(passwd);
+			entity.setPassword(passwd);
+		}
+		
+		return sysUserMapper.updateById(entity);
 	}
 
 }

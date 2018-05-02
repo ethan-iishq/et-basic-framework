@@ -25,29 +25,82 @@
         <div>
             <div>
 
-                <h1 class="logo-name">H+</h1>
+                <h2 class="logo-name">et</h1>
 
             </div>
-            <h3>欢迎使用 H+</h3>
+            <h3>欢迎登录</h3>
 
 			<div th:if="${param.error}">Invalid username and password.</div>
 			<div th:if="${param.logout}">You have been logged out.</div>
+					
+            <form class="form-horizontal" id="loginForm" th:action="@{/login}" method="post">
+                <p></p>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">用户名：</label>
 
-            <form id="loginForm" th:action="@{/login}" method="post">  
-	            <div  class="form-group"><label> User Name : <input type="text" name="username"/> </label></div>  
-	            <div  class="form-group"><label> Password: <input type="password" name="password"/> </label></div> 
-	            <div  class="form-group">
-	            	<label> imageCode: <input type="text" name="imageCode" value="666"/> </label>
-	            	<img id="captchaId" th:src="@{/captcha-image}" onClick="refresh()" height="50" width="100"/>
+                    <div class="col-md-7">
+                        <input type="text" name="username" placeholder="用户名" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">密码：</label>
+
+                    <div class="col-md-7">
+                        <input type="password" name="password" placeholder="密码" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">验证码：</label>
+
+                    <div class="col-md-7">
+                        <input type="text" name="imageCode" placeholder="验证码" class="form-control">
+                    </div>
+                    <div class="col-md-1">
+                        <img  id="captchaId" th:src="@{/captcha-image}" onClick="refresh()" height="30" width="50"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-8">
+                        <button class="btn btn-sm btn-white" type="submit">登 录</button>
+                        <button class="btn" type="button" id="ajaxLoginBtn">异步ajax登录</button>
+                    </div>
+                </div>
+                <div>
+	            	<label><input type="checkbox" name="remember-me"  value="true" th:checked="checked" class="i-checks">Remember me</label>
+	            	<!-- <p>Remember me</p>  <input type="checkbox" name="remember-me" value="true" th:checked="checked"/> -->
 	            </div>
-	            <div>
-	            	<input type="submit" value="Sign In"/>
-	            	<button type="button" id="ajaxLoginBtn">ajax login</button>
+            </form>
+                    
+			<div><p>password:etframework</p></div>
+
+            <!-- <form id="loginForm" th:action="@{/login}" method="post">  
+	            <div  class="form-group">
+	            	<label class="col-md-4"> 用户名 :  </label>
+	            	<input type="text" name="username"/>
+	            </div>  
+	            <div  class="form-group">
+	            	<label class="col-md-4"> 密码:  </label>
+	            	<input type="password" name="password"/>
+	            </div> 
+	            <div  class="form-group">
+	            	<label class="col-md-4"> 验证码:  </label>
+	            	<div class="col-md-5">
+		            	<input type="text" name="imageCode"/>
+		            	<img id="captchaId" th:src="@{/captcha-image}" onClick="refresh()" height="20" width="40"/>
+	            	</div>
+	            	<div class="col-md-2">
+		            	<img id="captchaId" th:src="@{/captcha-image}" onClick="refresh()" height="20" width="40"/>
+	            	</div>
+	            </div>
+	            <div  class="form-group">
+	            	<input type="submit" value="登录"/>
+	            	<button type="button" id="ajaxLoginBtn">异步ajax登录</button>
 	            </div>  
 	            <div>
+	            	<label><input type="checkbox" name="remember-me"  value="true" th:checked="checked" class="i-checks">Remember me</label>
 	            	<p>Remember me</p>  <input type="checkbox" name="remember-me" value="true" th:checked="checked"/>
 	            </div>
-	        </form>
+	        </form> -->
 
 			
 		</div>
@@ -68,6 +121,7 @@
     				window.location.href = data.redirectUrl;
     			}else{
     				alert(data.msg);
+    				refresh();
     			}
     			
     		});

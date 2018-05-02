@@ -15,7 +15,7 @@ import ethan.etframework.service.SysPermissionService;
 import ethan.etframework.service.SysRoleService;
 import ethan.etframework.service.SysUserService;
 
-@Service
+//@Service
 public class CustomUserDetailsService implements UserDetailsService{
 
 	@Autowired

@@ -13,5 +13,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface SysUserService extends IService<SysUser> {
 	Integer createUser(SysUser entity);
+	Integer updateUser(SysUser entity);
 	SysUser findUserByUsername(String username);
 }

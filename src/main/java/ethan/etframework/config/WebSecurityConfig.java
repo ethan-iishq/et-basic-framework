@@ -74,9 +74,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override 
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
+		auth.userDetailsService(customUserService());
 		auth.authenticationProvider(customAuthenticationProvider);
-		//user Details Service验证 
+		
+		auth.eraseCredentials(false); 
 	}
 /*	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -103,9 +104,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout().permitAll()
 			.and()
 			.rememberMe()
-			.tokenRepository(persistentTokenRepository())
+			.tokenValiditySeconds(60*60*24*7) //注销行为任意访问 
+			.tokenRepository(persistentTokenRepository());
 			//.rememberMeServices(rememberMeServices())
-			.tokenValiditySeconds(60*60*24*7); //注销行为任意访问 
+			
 		//http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class); 
 	}
 	
